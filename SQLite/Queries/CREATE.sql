@@ -19,7 +19,10 @@ CREATE TABLE Section (
     Weekday         INTEGER (1) NOT NULL
                                 CONSTRAINT CheckWeekday CHECK ( (Weekday >= 0) AND
                                                                 (Weekday < 7) ),
-    MeetingTime     INTEGER (4) CHECK (MeetingTime < 2400) 
+    MeetingTime TEXT CHECK (
+        substr(MeetingTime, 1, 2) BETWEEN '00' AND '23' AND
+        substr(MeetingTime, 4, 2) BETWEEN '00' AND '59'
+    )
 );
 
 CREATE TABLE Assignment (
@@ -58,7 +61,8 @@ CREATE TABLE Grade (
                                 NOT NULL,
     AssignmentID    INTEGER     REFERENCES Assignment (AssignmentID)
                                 NOT NULL,
-    GradePercent    REAL        NOT NULL
+    GradePercent    INTEGER     NOT NULL,
+    PRIMARY KEY (StudentID, AssignmentID)
 );
 
 ROLLBACK;
