@@ -48,8 +48,6 @@ CREATE TABLE Student (
 CREATE TABLE Enrollment (
     StudentID       INTEGER     NOT NULL
                                 REFERENCES Student (StudentID) ON DELETE CASCADE,
-    
-
     SectionID       INTEGER     NOT NULL
                                 REFERENCES Section (SectionID) ON DELETE CASCADE,
     PRIMARY KEY (StudentID, SectionID) 
@@ -59,7 +57,8 @@ CREATE TABLE Grade (
     StudentID       INTEGER     REFERENCES Student (StudentID)
                                 NOT NULL,
     AssignmentID    INTEGER     REFERENCES Assignment (AssignmentID)
-                                NOT NULL
+                                NOT NULL,
+    GradePercent    REAL        NOT NULL
 );
 
 ROLLBACK;
