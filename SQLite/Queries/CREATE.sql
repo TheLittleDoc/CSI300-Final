@@ -1,5 +1,3 @@
-BEGIN TRANSACTION;
-
 CREATE TABLE Course (
     CourseID        INTEGER     PRIMARY KEY ASC AUTOINCREMENT
                                 UNIQUE
@@ -64,5 +62,3 @@ CREATE TABLE Grade (
     GradePercent    INTEGER     NOT NULL,
     PRIMARY KEY (StudentID, AssignmentID)
 );
-
-ROLLBACK;
