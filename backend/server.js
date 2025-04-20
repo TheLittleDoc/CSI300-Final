@@ -1,10 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
+const env = require('dotenv').config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+var envPath = "./.env";
+var envData = env.parsed;
+console.log('Environment Variables:', envData);
+console.log('Database connection:', db);
+
 
 // Auth
 app.post('/login', (req, res) => {
@@ -13,7 +20,7 @@ app.post('/login', (req, res) => {
     console.log('Request body:', req.body);
   
     const { user, password } = req.body;
-    if (user === 'ADMIN' && password === 'ADMIN') {
+    if (user === envData.USER && password === envData.PASSWORD) {
       console.log('✅ Login success');
       res.json({ success: true });
     } else {
