@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Form({ type, onSubmit, initialData = {}, categories = [] }) {
+export default function Form({ type, onSubmit, initialData = {}, students = [] }) {
   const [formData, setFormData] = useState(initialData);
 
   const handleChange = (e) => {
@@ -25,40 +25,47 @@ export default function Form({ type, onSubmit, initialData = {}, categories = []
             required
           />
         </>
+      ) : type === 'student' ? (
+          <>
+            <input
+                name="FirstName"
+                placeholder="First Name"
+                value={formData.FirstName || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="LastName"
+                placeholder="Last Name"
+                value={formData.LastName || ''}
+                onChange={handleChange}
+                required
+            />
+
+            <input
+                name="Email"
+                placeholder="me@example.com"
+                value={formData.Email || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="GraduationYear"
+                type="number"
+                step="1"
+                placeholder="20XX"
+                value={formData.GraduationYear || ''}
+                onChange={handleChange}
+                required
+            />
+          </>
       ) : (
         <>
-          <input
-            name="product_name"
-            placeholder="Product Name"
-            value={formData.product_name || ''}
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="price"
-            type="number"
-            step="0.01"
-            placeholder="Price"
-            value={formData.price || ''}
-            onChange={handleChange}
-            required
-          />
-          <select
-            name="category_id"
-            value={formData.category_id || ''}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Category</option>
-            {categories.map(cat => (
-              <option key={cat.category_id} value={cat.category_id}>
-                {cat.category_name}
-              </option>
-            ))}
-          </select>
+          <p>Unknown Type</p>
         </>
+
       )}
-      <button type="submit">{initialData?.category_id || initialData?.product_id ? 'Update' : 'Add'}</button>
+      <button type="submit">{initialData?.category_id || initialData?.StudentID ? 'Update' : 'Add'}</button>
     </form>
   );
 }

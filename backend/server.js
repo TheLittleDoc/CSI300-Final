@@ -33,8 +33,8 @@ app.post('/login', (req, res) => {
   
   
 // CRUD endpoints for Category
-app.get('/categories', (req, res) => {
-  db.all('SELECT * FROM Category', [], (err, rows) => res.json(rows));
+app.get('/students', (req, res) => {
+  db.all('SELECT * FROM Student', [], (err, rows) => res.json(rows));
 });
 
 app.post('/categories', (req, res) => {
@@ -69,18 +69,26 @@ app.put('/categories/:id', (req, res) => {
   });
   
   // GET all Products
-app.get('/products', (req, res) => {
-    db.all('SELECT * FROM Product', [], (err, rows) => {
+app.get('/students', (req, res) => {
+    db.all('SELECT * FROM Student', [], (err, rows) => {
       if (err) return res.status(500).json(err);
       res.json(rows);
     });
   });
-  
+
+/*
+ *
+ * INSERT INTO "main"."Student"
+ * ("FirstName", "LastName", "Email", "GraduationYear")
+ * VALUES ('Eddie', 'Mustermann', 'eddie.mustermann@mymail.champlain.edu', 2027);
+ *
+ */
+
   // ADD Product
-  app.post('/products', (req, res) => {
-    const { product_name, price, category_id } = req.body;
-    db.run('INSERT INTO Product (product_name, price, category_id) VALUES (?, ?, ?)', 
-      [product_name, price, category_id], 
+  app.post('/students', (req, res) => {
+    const { FirstName, LastName, Email, GraduationYear } = req.body;
+    db.run('INSERT INTO Student (FirstName, LastName, Email, GraduationYear) VALUES (?, ?, ?, ?)',
+      [FirstName, LastName, Email, GraduationYear],
       function(err) {
         if (err) return res.status(500).json(err);
         res.json({ id: this.lastID });
@@ -89,10 +97,10 @@ app.get('/products', (req, res) => {
   });
   
   // UPDATE Product
-  app.put('/products/:id', (req, res) => {
-    const { product_name, price, category_id } = req.body;
-    db.run('UPDATE Product SET product_name = ?, price = ?, category_id = ? WHERE product_id = ?', 
-      [product_name, price, category_id, req.params.id], 
+  app.put('/students/:id', (req, res) => {
+    const { StudentID, FirstName, LastName, Email, GraduationYear } = req.body;
+    db.run('UPDATE Student SET FirstName = ?, LastName = ?, Email = ?, GraduationYear = ? WHERE StudentID = ?',
+      [FirstName, LastName, Email, GraduationYear, req.params.id],
       function(err) {
         if (err) return res.status(500).json(err);
         res.json({ updated: this.changes });
@@ -100,9 +108,9 @@ app.get('/products', (req, res) => {
     );
   });
   
-  // DELETE Product
-  app.delete('/products/:id', (req, res) => {
-    db.run('DELETE FROM Product WHERE product_id = ?', [req.params.id], function(err) {
+  // DELETE Student
+  app.delete('/students/:id', (req, res) => {
+    db.run('DELETE FROM Student WHERE StudentID = ?', [req.params.id], function(err) {
       if (err) return res.status(500).json(err);
       res.json({ deleted: this.changes });
     });
