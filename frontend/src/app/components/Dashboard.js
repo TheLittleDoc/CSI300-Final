@@ -2,69 +2,47 @@ import { useEffect, useState } from 'react';
 import Form from './Form';
 
 export default function Dashboard({ isAdmin }) {
-  const [categories, setCategories] = useState([]);
+  const [students, setStudents] = useState([]);
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
 
-  const [editCategory, setEditCategory] = useState(null);
+  const [editStudent, setEditStudent] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
 
   const fetchData = () => {
-    fetch('http://localhost:5000/categories')
+    fetch('http://localhost:5000/students')
       .then(res => res.json())
-      .then(setCategories);
-    fetch('http://localhost:5000/products')
-      .then(res => res.json())
-      .then(setProducts);
+      .then(setStudents);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const addOrUpdateCategory = async (data) => {
-    const method = editCategory ? 'PUT' : 'POST';
-    const url = editCategory
-      ? `http://localhost:5000/categories/${editCategory.category_id}`
-      : 'http://localhost:5000/categories';
+  const addOrUpdateStudent = async (data) => {
+    const method = editStudent ? 'PUT' : 'POST';
+    const url = editStudent
+      ? `http://localhost:5000/students/${editStudent.StudentID}`
+      : 'http://localhost:5000/students';
 
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    setEditCategory(null);
+    setEditStudent(null);
     fetchData();
   };
 
-  const addOrUpdateProduct = async (data) => {
-    const method = editProduct ? 'PUT' : 'POST';
-    const url = editProduct
-      ? `http://localhost:5000/products/${editProduct.product_id}`
-      : 'http://localhost:5000/products';
 
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    setEditProduct(null);
+  const deleteStudent = async (id) => {
+    await fetch(`http://localhost:5000/students/${id}`, { method: 'DELETE' });
     fetchData();
   };
 
-  const deleteCategory = async (id) => {
-    await fetch(`http://localhost:5000/categories/${id}`, { method: 'DELETE' });
-    fetchData();
-  };
-
-  const deleteProduct = async (id) => {
-    await fetch(`http://localhost:5000/products/${id}`, { method: 'DELETE' });
-    fetchData();
-  };
-
-  const getCategoryName = (category_id) => {
-    const cat = categories.find(c => c.category_id === category_id);
-    return cat ? cat.category_name : 'Unknown';
+  const getStudentName = (StudentID) => {
+    const student = students.find(s => s.StudentID === StudentID);
+    return student ? student.LastName + ", " + student.FirstName : 'Unknown';
   };
 
   const filteredProducts = products.filter(p =>
@@ -73,31 +51,31 @@ export default function Dashboard({ isAdmin }) {
 
   return (
     <div>
-      <h2>Categories</h2>
+      <h2>Students</h2>
       {isAdmin && (
         <Form
-          type="category"
-          onSubmit={addOrUpdateCategory}
-          initialData={editCategory || {}}
+          type="student"
+          onSubmit={addOrUpdateStudent}
+          initialData={editStudent || {}}
         />
       )}
       <table border="1" cellPadding="6" style={{ marginBottom: '2em' }}>
         <thead>
           <tr>
-            <th>Category ID</th>
-            <th>Category Name</th>
+            <th>Student ID</th>
+            <th>Student Name</th>
             {isAdmin && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
-          {categories.map(cat => (
-            <tr key={cat.category_id}>
-              <td>{cat.category_id}</td>
-              <td>{cat.category_name}</td>
+          {students.map(student => (
+            <tr key={student.StudentID}>
+              <td>{student.StudentID}</td>
+              <td>{getStudentName(student.StudentID)}</td>
               {isAdmin && (
                 <td>
-                  <button onClick={() => setEditCategory(cat)}>Edit</button>
-                  <button onClick={() => deleteCategory(cat.category_id)}>Delete</button>
+                  <button onClick={() => setEditStudent(student)}>Edit</button>
+                  <button onClick={() => deleteStudent(student.StudentID)}>Delete</button>
                 </td>
               )}
             </tr>
@@ -113,14 +91,6 @@ export default function Dashboard({ isAdmin }) {
         style={{ marginBottom: '1em', padding: '4px', width: '300px' }}
       />
 
-      {isAdmin && (
-        <Form
-          type="product"
-          onSubmit={addOrUpdateProduct}
-          initialData={editProduct || {}}
-          categories={categories}
-        />
-      )}
 
       <table border="1" cellPadding="6" style={{ width: '50%' }}>
         <thead>
