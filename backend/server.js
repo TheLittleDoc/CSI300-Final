@@ -115,6 +115,15 @@ app.get('/courses', (req, res) => {
     });
 });
 
+app.get('/courses/:id', (req, res) => {
+    db.get('SELECT * FROM Course WHERE CourseID = ?', [req.params.id], (err, row) => {
+        if (err) return res.status(500).json(err);
+        res.json(row);
+    });
+});
+
+app.get
+
 app.post('/courses', (req, res) => {
     const {CoursePrefix, CourseCode, CourseName, Description} = req.body;
     db.run('INSERT INTO Course (CoursePrefix, CourseCode, CourseName, Description) VALUES (?, ?, ?, ?)',
@@ -148,6 +157,13 @@ app.delete('/courses/:id', (req, res) => {
 // Section routes
 app.get('/sections/:courseid', (req, res) => {
     db.all('SELECT * FROM Section WHERE CourseID = ?', [req.params.courseid], (err, rows) => {
+        if (err) return res.status(500).json(err);
+        res.json(rows);
+    });
+});
+
+app.get('/sections', (req, res) => {
+    db.all('SELECT * FROM Section', [], (err, rows) => {
         if (err) return res.status(500).json(err);
         res.json(rows);
     });
@@ -220,6 +236,26 @@ app.delete('/assignments/:id', (req, res) => {
     });
 });
 
+app.get('/enrollments', (req, res) => {
+    db.all('SELECT * FROM Enrollment', [], (err, rows) => {
+        if (err) return res.status(500).json(err);
+        res.json(rows);
+    });
+
+});
+
+app.get('/enrollments/:sectionId', (req, res) => {
+    db.all('SELECT * FROM Enrollment WHERE SectionID = ?', [req.params.sectionId], (err, rows) => {
+        if (err) return res.status(500).json(err);
+        res.json(rows);
+    });
+});
+app.get('/enrollments/:sectionId/students' , (req, res) => {
+    db.all('SELECT * FROM Student JOIN Enrollment ON Student.StudentID = Enrollment.StudentID WHERE SectionID = ?', [req.params.sectionId], (err, rows) => {
+        if (err) return res.status(500).json(err);
+        res.json(rows);
+    });
+});
 
 // Enrollment routes
 app.post('/enrollments', (req, res) => {
@@ -252,8 +288,29 @@ app.post('/grades', (req, res) => {
         });
 });
 
+app.get('/grades', (req, res) => {
+    db.all('SELECT * FROM Grade', [], (err, rows) => {
+        if (err) return res.status(500).json(err);
+        res.json(rows);
+    });
+});
+
 app.get('/grades/:studentId', (req, res) => {
     db.all('SELECT * FROM Grade WHERE StudentID = ?', [req.params.studentId], (err, rows) => {
+        if (err) return res.status(500).json(err);
+        res.json(rows);
+    });
+});
+
+app.get('/grades/assignment/:assignmentId', (req, res) => {
+    db.all('SELECT * FROM Grade WHERE AssignmentID = ?', [req.params.assignmentId], (err, rows) => {
+        if (err) return res.status(500).json(err);
+        res.json(rows);
+    });
+});
+
+app.get('/assignments/course/:courseId', (req, res) => {
+    db.all('SELECT * FROM Assignment WHERE SectionID IN (SELECT SectionID FROM Section WHERE CourseID = ?)', [req.params.courseId], (err, rows) => {
         if (err) return res.status(500).json(err);
         res.json(rows);
     });

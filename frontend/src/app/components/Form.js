@@ -10,7 +10,16 @@ export default function Form({ type, onSubmit, initialData = {}, students = [] }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    {
+      type === 'student' ? (
+          onSubmit(formData)
+          ) : type === 'enrollment' ? (
+                onSubmit({
+                    StudentID: formData.StudentID,
+                    SectionID: formData.section
+                })
+            ) : onSubmit(formData);
+    }
   };
 
   return (
@@ -58,6 +67,26 @@ export default function Form({ type, onSubmit, initialData = {}, students = [] }
                 onChange={handleChange}
                 required
             />
+          </>
+      ) : type === 'enrollment' ? (
+          <>
+            <input
+                name="Name"
+                placeholder="First Name"
+                value={formData.FirstName + ' ' + formData.LastName + " (" + formData.StudentID || ''}
+                onChange={handleChange}
+                disabled={true}
+                required
+            />
+            <label htmlFor="section">Select Section</label>
+            <select id={"section"} name="section" onChange={handleChange} required>
+              {formData.sections.map(section => (
+                    <option key={section.sectionID} value={section.sectionID}>
+                        {section.sectionCode}
+                    </option>
+                ))
+              }
+            </select>
           </>
       ) : (
         <>

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Login from "@/app/components/Login";
-import Dashboard from "@/app/components/Dashboard";
+import Students from "@/app/components/Students";
 import { useState } from "react";
 import List from "@/app/components/List"
 
@@ -22,7 +22,7 @@ export default function Home() {
                 <button onClick={() => setLoggedIn(false)}>Logout</button>
             )}
           </div>
-          <List isAdmin={loggedIn}/>
+          <Students isAdmin={loggedIn} />
         </div>
       </main>
     </div>
