@@ -189,13 +189,6 @@ export default function Students({ isAdmin }) {
           </tbody>
         </table>
 
-        <h2>All Products</h2>
-        <input
-            placeholder="Search product name..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{marginBottom: '1em', padding: '4px', width: '300px'}}
-        />
 
 
       </div>

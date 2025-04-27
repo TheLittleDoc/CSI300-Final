@@ -73,7 +73,7 @@ export default function Form({ type, onSubmit, initialData = {}, students = [] }
             <input
                 name="Name"
                 placeholder="First Name"
-                value={formData.FirstName + ' ' + formData.LastName + " (" + formData.StudentID || ''}
+                value={formData.FirstName + ' ' + formData.LastName + " (" + formData.StudentID + ')' || ''}
                 onChange={handleChange}
                 disabled={true}
                 required
