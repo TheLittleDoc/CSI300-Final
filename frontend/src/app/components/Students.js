@@ -100,12 +100,19 @@ export default function Students({ isAdmin }) {
   return (
       <div>
         <h2>Students</h2>
-        {isAdmin && editStudent && (action === "editAdd") ? (
-            <Form
-                type="student"
-                onSubmit={addOrUpdateStudent}
-                initialData={editStudent || {}}
-            />
+        {isAdmin && (action === "editAdd") ? ( editStudent ? (
+              <Form
+              type="student"
+              onSubmit={addOrUpdateStudent}
+              initialData={editStudent || {}}
+          />) : (
+                <Form
+                    type="student"
+                    onSubmit={addOrUpdateStudent}
+                    initialData={{}}
+                />)
+
+
         ) : isAdmin && editStudent && (action === "enrollStudent") ? (
             <Form
                 type="enrollment"
@@ -130,6 +137,13 @@ export default function Students({ isAdmin }) {
                 </option>
             ))}
         </select>)}
+        {filter === 'allStudents' && isAdmin && (
+            <button onClick={() => {
+              setAction('editAdd');
+              setEditStudent(null);
+            }}>Add Student</button>
+        )
+        }
 
 
 
