@@ -1,18 +1,58 @@
-import { useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import backArrow from '../assets/Curved-Arrow-PNG_1024.png';
 import Image from 'next/image';
 
-export default function List(){
+export default function List({ isAdmin }){
 
     const [headerExample, updateHeader] = useState(['Classes', 'CSI_320', 'CSI_320-01']);
     const [arrayExample, updateArrayExample] = useState(['Eddie Slobodow', 'John Smith', 'Timmie Longstick', 'Kyle Roundbottom', 'Kanye West']);
     const [activeIndex, setActiveIndex] = useState(null);
 
+    const [students, setStudents] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [sections, setSections] = useState([]);
+    const [grades, setGrades] = useState([]);
+    const [enrollments, setEnrollments] = useState([]);
+    const [assignments, setAssignments] = useState([]);
+
+
+    const fetchData = () => {
+        fetch('http://localhost:5000/students')
+            .then(res => res.json())
+            .then(setStudents);
+        fetch('http://localhost:5000/courses')
+            .then(res => res.json())
+            .then(setCourses);
+        fetch('http://localhost:5000/sections')
+            .then(res => res.json())
+            .then(setSections);
+        fetch('http://localhost:5000/grades')
+            .then(res => res.json())
+            .then(setGrades);
+        fetch('http://localhost:5000/enrollments')
+            .then(res => res.json())
+            .then(setEnrollments);
+        fetch('http://localhost:5000/assignments')
+            .then(res => res.json())
+            .then(setAssignments);
+    };
+
     const [selectOption1, setOption1] = useState('Student Info');
     const [selectOption2, setOption2] = useState('Student Grades');
 
+    const [generalOptions, setGeneralOptions] = useState([]);
+    const [adminOptions, setAdminOptions] = useState([]);
+
+    const _studentOptions = {unauthenticated: ['Student Info'], authenticated: ['Grades', 'Enrollments']}
+    const _courseOptions = {unauthenticated: ['Course Info', 'Sections'], authenticated: []}
+    const _sectionOptions = {unauthenticated: ['Section Info', 'Students', 'Assignments'], authenticated: []}
+
     const section = useRef('students');
     const itemCache = useRef('');
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     // Will be ran when the back button is clicked to move back up the heirarchy
     const upHierarchy = (item) => {
@@ -135,12 +175,12 @@ export default function List(){
 
                     {activeIndex === index  && (selectOption1 || selectOption2) ? (
                         <div className="optionContainer">
-                        <div onClick={(e) => selectPath(e, 0)} className='selectOption'>
-                        {selectOption1}
-                        </div>
-                        <div onClick={(e) => selectPath(e, 1)} className='selectOption'>
-                        {selectOption2}
-                        </div>
+                            <div onClick={(e) => selectPath(e, 0)} className='selectOption'>
+                            {selectOption1}
+                            </div>
+                            <div onClick={(e) => selectPath(e, 1)} className='selectOption'>
+                            {selectOption2}
+                            </div>
                         </div>
                     ) : (
                         item
