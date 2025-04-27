@@ -146,8 +146,8 @@ app.delete('/courses/:id', (req, res) => {
 
 
 // Section routes
-app.get('/sections', (req, res) => {
-    db.all('SELECT * FROM Section', [], (err, rows) => {
+app.get('/sections/:courseid', (req, res) => {
+    db.all('SELECT * FROM Section WHERE CourseID = ?', [req.params.courseid], (err, rows) => {
         if (err) return res.status(500).json(err);
         res.json(rows);
     });
@@ -246,7 +246,7 @@ app.delete('/enrollments', (req, res) => {
 app.post('/grades', (req, res) => {
     const {StudentID, AssignmentID, GradePercent} = req.body;
     db.run('INSERT INTO Grade (StudentID, AssignmentID, GradePercent) VALUES (?, ?, ?)',
-        [StudentI, AssignmentID, GradePercent], function (err) {
+        [StudentID, AssignmentID, GradePercent], function (err) {
             if (err) return res.status(500).json(err);
             res.json({success: true});
         });
