@@ -66,10 +66,11 @@ export default function List({ isAdmin }){
 
     // Will be ran when a data entry is clicked to move further down the heirarchy
     const downHierarchy = (item, index) => {
+
         if (selectOption1 || selectOption2) {
             console.log('Clicked:', item);
             itemCache.current = item;
-            setActiveIndex(index);
+            (index === activeIndex) ? setActiveIndex(null) : setActiveIndex(index);
         }
     };
 
