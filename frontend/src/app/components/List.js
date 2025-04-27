@@ -1,36 +1,150 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import backArrow from '../assets/Curved-Arrow-PNG_1024.png';
 import Image from 'next/image';
 
 export default function List(){
 
-    const headerExample = "CSI_320-01";
-    const arrayExample = ['Eddie Slobodow', 'John Smith', 'Supercoolfirstname Supercoollastname'];
-    const layerExample = "Students";
+    const [headerExample, updateHeader] = useState(['Classes', 'CSI_320', 'CSI_320-01']);
+    const [arrayExample, updateArrayExample] = useState(['Eddie Slobodow', 'John Smith', 'Timmie Longstick', 'Kyle Roundbottom', 'Kanye West']);
+    const [activeIndex, setActiveIndex] = useState(null);
+
+    const [selectOption1, setOption1] = useState('Student Info');
+    const [selectOption2, setOption2] = useState('Student Grades');
+
+    const section = useRef('students');
+    const itemCache = useRef('');
 
     // Will be ran when the back button is clicked to move back up the heirarchy
     const upHierarchy = (item) => {
-        console.log('Clicked:', item);
+        if (headerExample.length > 1){
+            console.log('Clicked:', item);
+            setActiveIndex(null);
+            runQuery(findPreviousSection())
+            updateHeader(prev => prev.slice(0, -1));
+        }
     }
 
     // Will be ran when a data entry is clicked to move further down the heirarchy
-    const downHierarchy = (item) => {
-        console.log('Clicked:', item);
+    const downHierarchy = (item, index) => {
+        if (selectOption1 || selectOption2) {
+            console.log('Clicked:', item);
+            itemCache.current = item;
+            setActiveIndex(index);
+        }
     };
+
+    const selectPath = (e, path) => {
+        e.stopPropagation(); 
+        setActiveIndex(null);
+        runQuery(findNextSection(path))
+        updateHeader(prev => [...prev, itemCache.current]);
+    }
+
+    function findNextSection(path) {
+        switch (section.current) {
+            case 'courses':
+                return path ? 'courseMaterials' : 'courseSections';
+            case 'courseSections':
+                return path ? 'courseInfo' : 'students';
+            case 'students':
+                return path ? 'studentGrades' : 'studentInfo';
+            default:
+                return 'default'
+        }
+    }
+
+    function findPreviousSection() {
+        switch (section.current) {
+            case 'courses':
+                return 'default';
+            case 'courseMaterials':
+                return 'courses'
+            case 'courseSections':
+                return 'courses';
+            case 'courseInfo':
+                return 'courseSections';
+            case 'students':
+                return 'courseSections';
+            case 'studentGrades':
+                return 'students'
+            case 'studentInfo':
+                return 'students'
+        }
+    }
+
+    function runQuery(desiredSection) {
+        switch (desiredSection) {
+            case 'courses':
+                section.current = 'courses';
+                updateArrayExample(['DAT-210', 'DAT-410', 'CSI-300']);
+                setOption1('Course Sections');
+                setOption2('Course Materials');
+                break;
+            case 'courseMaterials':
+                section.current = 'courseMaterials';
+                updateArrayExample(['link1', 'link2', 'link3', 'link4', 'link5']);
+                setOption1('');
+                setOption2('');
+                break;
+            case 'courseSections':
+                section.current = 'courseSections';
+                updateArrayExample(['CSI-300-01', 'CSI-300-02']);
+                setOption1('Students');
+                setOption2('Course Info');
+                break;
+            case 'courseInfo':
+                section.current = 'courseInfo';
+                updateArrayExample(['Joyce-201', '11:30pm-12:45pm']);
+                setOption1('');
+                setOption2('');
+                break;
+            case 'students':
+                section.current = 'students';
+                updateArrayExample(['Eddie Slobodow', 'John Smith', 'Timmie Longstick', 'Kyle Roundbottom', 'Kanye West']);
+                setOption1('Student Info');
+                setOption2('Student Grades');
+                break;
+            case 'studentGrades':
+                section.current = 'studentGrades';
+                updateArrayExample(['Quiz1: 89%', 'Quiz2: 85%', 'Project1: 80%', 'Project2: 90%', 'Final: 95%']);
+                setOption1('');
+                setOption2('');
+                break;
+            case 'studentInfo':
+                section.current = 'studentInfo';
+                updateArrayExample(['kanyewest@gmail.com', 'German Studies', '2026']);
+                setOption1('');
+                setOption2('');
+                break;
+        }
+    }
+
       
     return (
         <>
         <table className="verticalTable">
             <tr>
-                <th>{headerExample}
-                    <div className="backButton" onClick={() => upHierarchy(headerExample)}>
+                <th>{headerExample[headerExample.length - 1]}
+                    <div className="backButton" onClick={() => upHierarchy(headerExample[headerExample.length - 1])}>
                     <Image src={backArrow} alt="Back arrow" width={25} height={25} />
                     </div>
                 </th>
 
                 {arrayExample.map((item, index) => (
-                <td key={index} className="dataEntry" onClick={() => downHierarchy(item)}>
-                    {item}
+                <td key={index} className="dataEntry" onClick={() => downHierarchy(item, index)}>
+
+                    {activeIndex === index  && (selectOption1 || selectOption2) ? (
+                        <div className="optionContainer">
+                        <div onClick={(e) => selectPath(e, 0)} className='selectOption'>
+                        {selectOption1}
+                        </div>
+                        <div onClick={(e) => selectPath(e, 1)} className='selectOption'>
+                        {selectOption2}
+                        </div>
+                        </div>
+                    ) : (
+                        item
+                    )}
                 </td>
                 ))}
 

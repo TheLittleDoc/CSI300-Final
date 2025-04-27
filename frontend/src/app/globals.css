@@ -45,6 +45,7 @@ a {
 .verticalTable {
   border-collapse: collapse;
   width: 100%;
+  min-width: 400px;
   max-width: 400px;
   
 }
@@ -80,5 +81,16 @@ a {
 
 .backButton:hover {
   background-color: rgb(202, 75, 75);
+}
+
+.selectOption {
+  border: 1px solid #333;
+  padding: 5px;
+}
+
+.optionContainer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px; 
 }
 
