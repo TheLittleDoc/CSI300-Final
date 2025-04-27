@@ -49,6 +49,7 @@ export default function List({ isAdmin }){
 
     const section = useRef('students');
     const itemCache = useRef('');
+    const queryParameter = useRef('CSI_320');
 
     useEffect(() => {
         fetchData();
@@ -57,8 +58,10 @@ export default function List({ isAdmin }){
     // Will be ran when the back button is clicked to move back up the heirarchy
     const upHierarchy = (item) => {
         if (headerExample.length > 1){
+            itemCache.current = item;
             console.log('Clicked:', item);
             setActiveIndex(null);
+            queryParameter.current = headerExample.length > 1 ? headerExample[headerExample.length - 2] : '';
             runQuery(findPreviousSection())
             updateHeader(prev => prev.slice(0, -1));
         }
@@ -77,6 +80,7 @@ export default function List({ isAdmin }){
     const selectPath = (e, path) => {
         e.stopPropagation(); 
         setActiveIndex(null);
+        queryParameter.current = itemCache.current;
         runQuery(findNextSection(path))
         updateHeader(prev => [...prev, itemCache.current]);
     }
@@ -90,7 +94,7 @@ export default function List({ isAdmin }){
             case 'students':
                 return path ? 'studentGrades' : 'studentInfo';
             default:
-                return 'default'
+                return 'default';
         }
     }
 
@@ -107,9 +111,9 @@ export default function List({ isAdmin }){
             case 'students':
                 return 'courseSections';
             case 'studentGrades':
-                return 'students'
+                return 'students';
             case 'studentInfo':
-                return 'students'
+                return 'students';
         }
     }
 
@@ -129,7 +133,7 @@ export default function List({ isAdmin }){
 
                 // Query for the links to assignments/materials for a given class
                 // You can get the given class and the parameter for every
-                // other query from itemCache.current
+                // other query from queryParameter.current
 
                 updateArrayExample(['link1', 'link2', 'link3', 'link4', 'link5']);
                 setOption1('');
@@ -138,7 +142,7 @@ export default function List({ isAdmin }){
             case 'courseSections':
                 section.current = 'courseSections';
 
-                // Query for each section of a given class, get class from itemCache.current
+                // Query for each section of a given class, get class from queryParameter.current
 
                 updateArrayExample(['CSI-300-01', 'CSI-300-02']);
                 setOption1('Students');
@@ -146,7 +150,7 @@ export default function List({ isAdmin }){
                 break;
             case 'courseInfo':
 
-                // Query for the room number and start/end time of a given class from itemCache.current
+                // Query for the room number and start/end time of a given class from queryParameter.current
 
                 section.current = 'courseInfo';
                 updateArrayExample(['Joyce-201', '11:30pm-12:45pm']);
