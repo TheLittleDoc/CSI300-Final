@@ -15,15 +15,14 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div>
-          {/*<div style={{textAlign: 'right', padding: '10px'}}>
+          <div style={{textAlign: 'right', padding: '10px'}}>
             {!loggedIn ? (
                 <Login onLogin={() => setLoggedIn(true)}/>
             ) : (
                 <button onClick={() => setLoggedIn(false)}>Logout</button>
             )}
           </div>
-          <Dashboard isAdmin={loggedIn}/>*/}
-          <List/>
+          <List isAdmin={loggedIn}/>
         </div>
       </main>
     </div>
