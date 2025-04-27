@@ -11,7 +11,6 @@ export default function Students({ isAdmin }) {
   const [search, setSearch] = useState('');
 
   const [editStudent, setEditStudent] = useState(null);
-  const [editProduct, setEditProduct] = useState(null);
 
   const [filter, setFilter] = useState('allStudents');
   const [selectedSection , setSelectedSection] = useState(null);
@@ -120,6 +119,7 @@ export default function Students({ isAdmin }) {
           <option value="allStudents">All Students</option>
           <option value="bySection">By Section</option>
         </select>
+        {filter === 'bySection' && (
         <select onChange={(e) => {
 
           setSelectedSection(Number(e.target.value));
@@ -129,7 +129,7 @@ export default function Students({ isAdmin }) {
                     {getFullSectionCode(section.SectionID)}
                 </option>
             ))}
-        </select>
+        </select>)}
 
 
 
