@@ -117,41 +117,64 @@ export default function List({ isAdmin }){
         switch (desiredSection) {
             case 'courses':
                 section.current = 'courses';
+
+                // Query for all classes not including sections
+
                 updateArrayExample(['DAT-210', 'DAT-410', 'CSI-300']);
                 setOption1('Course Sections');
                 setOption2('Course Materials');
                 break;
             case 'courseMaterials':
                 section.current = 'courseMaterials';
+
+                // Query for the links to assignments/materials for a given class
+                // You can get the given class and the parameter for every
+                // other query from itemCache.current
+
                 updateArrayExample(['link1', 'link2', 'link3', 'link4', 'link5']);
                 setOption1('');
                 setOption2('');
                 break;
             case 'courseSections':
                 section.current = 'courseSections';
+
+                // Query for each section of a given class, get class from itemCache.current
+
                 updateArrayExample(['CSI-300-01', 'CSI-300-02']);
                 setOption1('Students');
                 setOption2('Course Info');
                 break;
             case 'courseInfo':
+
+                // Query for the room number and start/end time of a given class from itemCache.current
+
                 section.current = 'courseInfo';
                 updateArrayExample(['Joyce-201', '11:30pm-12:45pm']);
                 setOption1('');
                 setOption2('');
                 break;
             case 'students':
+
+                // Get all students in a given class
+
                 section.current = 'students';
                 updateArrayExample(['Eddie Slobodow', 'John Smith', 'Timmie Longstick', 'Kyle Roundbottom', 'Kanye West']);
                 setOption1('Student Info');
                 setOption2('Student Grades');
                 break;
             case 'studentGrades':
+
+                // Get all of a students grades for a given student
+
                 section.current = 'studentGrades';
                 updateArrayExample(['Quiz1: 89%', 'Quiz2: 85%', 'Project1: 80%', 'Project2: 90%', 'Final: 95%']);
                 setOption1('');
                 setOption2('');
                 break;
             case 'studentInfo':
+
+                // Get the email, major, and graduation year, for a given student
+
                 section.current = 'studentInfo';
                 updateArrayExample(['kanyewest@gmail.com', 'German Studies', '2026']);
                 setOption1('');
