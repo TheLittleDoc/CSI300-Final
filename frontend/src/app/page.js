@@ -7,7 +7,8 @@ import Students from "@/app/components/Students";
 import { useState } from "react";
 import List from "@/app/components/List"
 import Sections from "@/app/components/Sections";
-import Assignments from "./components/Assignments";
+import Assignments from "@/app/components/Assignments";
+import Courses from "@/app/components/Courses";
 
 export default function Home() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -27,6 +28,7 @@ export default function Home() {
           <Students isAdmin={loggedIn} />
           <Sections isAdmin={loggedIn} />
           <Assignments isAdmin={loggedIn} />
+          <Courses isAdmin={loggedIn} />
         </div>
       </main>
     </div>

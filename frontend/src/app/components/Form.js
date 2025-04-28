@@ -119,6 +119,38 @@ export default function Form({ type, onSubmit, initialData = {}, students = [] }
                 required
             />
           </>
+      ) : type === 'course' ? (
+        <>
+            <input
+                name="CoursePrefix"
+                placeholder="Course Prefix"
+                value={formData.CoursePrefix || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="CourseCode"
+                placeholder="Course Code"
+                value={formData.CourseCode || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="CourseName"
+                placeholder="Course Name"
+                value={formData.CourseName || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="Description"
+                placeholder="Description"
+                value={formData.Description || ''}
+                onChange={handleChange}
+                required
+            />
+        </>
+        
       ) : (
         <>
           <p>Unknown Type</p>
