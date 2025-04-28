@@ -9,6 +9,7 @@ import List from "@/app/components/List"
 import Sections from "@/app/components/Sections";
 import Assignments from "@/app/components/Assignments";
 import Courses from "@/app/components/Courses";
+import Grades from "@/app/components/Grades";
 
 export default function Home() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -29,6 +30,7 @@ export default function Home() {
           <Sections isAdmin={loggedIn} />
           <Assignments isAdmin={loggedIn} />
           <Courses isAdmin={loggedIn} />
+          <Grades isAdmin={loggedIn} />
         </div>
       </main>
     </div>
