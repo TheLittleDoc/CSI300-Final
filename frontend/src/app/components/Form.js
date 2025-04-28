@@ -88,6 +88,37 @@ export default function Form({ type, onSubmit, initialData = {}, students = [] }
               }
             </select>
           </>
+      ) : type === 'assignment' ? (
+          <>
+            <input
+                name="Name"
+                placeholder="Assignment Name"
+                value={formData.Name || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="Description"
+                placeholder="Description"
+                value={formData.Description || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="MaterialURL"
+                placeholder="Material URL"
+                value={formData.MaterialURL || ''}
+                onChange={handleChange}
+                required
+            />
+            <input
+                name="SectionID"
+                placeholder="Section ID"
+                value={formData.SectionID || ''}
+                onChange={handleChange}
+                required
+            />
+          </>
       ) : (
         <>
           <p>Unknown Type</p>
