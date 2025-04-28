@@ -1,11 +1,9 @@
 'use client'
 
-import Image from "next/image";
 import styles from "./page.module.css";
 import Login from "@/app/components/Login";
 import Students from "@/app/components/Students";
 import { useState } from "react";
-import List from "@/app/components/List"
 import Sections from "@/app/components/Sections";
 import Assignments from "@/app/components/Assignments";
 import Courses from "@/app/components/Courses";

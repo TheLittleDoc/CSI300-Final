@@ -93,11 +93,11 @@ export default function Assignments({ isAdmin }) {
     return assignment ? assignment.Name : 'Unknown';
   };
 
-  /*const getFullSectionCode = (sectionID) => {
+  const getFullSectionCode = (sectionID) => {
     const section = sections.find(s => s.SectionID === sectionID);
     const course = courses.find(c => c.CourseID === section.CourseID);
     return course ? course.CoursePrefix + "-" + course.CourseCode + "-" + section.SectionID : 'Unknown';
-  }*/
+  }
 
   return (
       <div>
@@ -122,30 +122,12 @@ export default function Assignments({ isAdmin }) {
                 initialData={editAssignment || {}}
             />
         ) : null}
-        <label htmlFor="cars">View Assignments by</label>
 
-        <select defaultValue={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="allAssignments">All Assignments</option>
-          <option value="byStudents">By Students</option>
-        </select>
-        {filter === 'byStudents' && (
-        <select onChange={(e) => {
-
-          setSelectedStudent(Number(e.target.value));
-        }} style={{marginLeft: '1em'}}>
-          {students.map(student => (
-                <option key={student.StudentID} value={student.StudentID}>
-                    {student.StudentID}
-                </option>
-            ))}
-        </select>)}
-        {filter === 'allAssignments' && isAdmin && (
             <button onClick={() => {
               setAction('editAdd');
               setEditAssignment(null);
             }}>Add Assignment</button>
-        )
-        }
+
 
 
 
@@ -157,16 +139,18 @@ export default function Assignments({ isAdmin }) {
             <th>Assignment Name</th>
             <th>Description</th>
             <th>MaterialURL</th>
+            <th>Course Section</th>
             {isAdmin && <th>Actions</th>}
           </tr>
           </thead>
           <tbody>
-          {filter === 'allAssignments' ? assignments.map(assignment => (
+          {assignments.map(assignment => (
               <tr key={assignment.AssignmentID}>
                 <td>{assignment.AssignmentID}</td>
                 <td>{getAssignmentName(assignment.AssignmentID)}</td>
                 <td>{assignment.Description}</td>
                 <td>{assignment.MaterialURL}</td>
+                <td>{getFullSectionCode(assignment.SectionID)}</td>
                 {isAdmin && (
                     <td>
                       <button onClick={() => {
@@ -174,34 +158,10 @@ export default function Assignments({ isAdmin }) {
                         setEditAssignment(assignment);
                       }}>Edit</button>
                       <button onClick={() => deleteAssignment(assignment.AssignmentID)}>Delete</button>
-                      <button onClick={() => {
-                        setAction('addGrade');
-                        setGradeForm(assignment);
-                      } }>Add to Student</button>
                     </td>
                 )}
               </tr>
-          ))
-              // filter only assignments that are associated with the selected student
-          : assignments.map(
-                assignment => grades.find(e => e.AssignmentID === assignment.AssignmentID && e.StudentID === selectedStudent) ? (
-                // filter only students that are enrolled in the selected section
-                <tr key={assignment.AssignmentID}>
-                    <td>{assignment.AssignmentID}</td>
-                    <td>{getAssignmentName(assignment.AssignmentID)}</td>
-                    <td>{assignment.Description}</td>
-                    <td>{assignment.MaterialURL}</td>
-                    {isAdmin && (
-                        <td>
-                        <button onClick={() => {
-                            setAction('editAdd');
-                            setEditAssignment(assignment);
-                        }}>Edit</button>
-                        <button onClick={() => deleteAssignment(assignment.AssignmentID)}>Delete</button>
-                        </td>
-                    )}
-                </tr>
-            ) : null)}
+          ))}
           </tbody>
         </table>
 
